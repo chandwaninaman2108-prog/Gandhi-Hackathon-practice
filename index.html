@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gandhi Jayanti Pledge &amp; Reflection Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: { ink:'#1C2433', indigo:'#2B3A67', madder:'#A93F3A', stone:'#ECEAE5', paper:'#FBFAF8', thread:'#C9C4B8' },
+    fontFamily: { display:['"Young Serif"','Georgia','serif'], body:['"Hanken Grotesk"','system-ui','sans-serif'] }
+  } }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Hanken Grotesk', system-ui, sans-serif; }
+  .panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; }
+  .panel > div { overflow: hidden; }
+  .open .panel { grid-template-rows: 1fr; }
+  .open .chev { transform: rotate(45deg); }
+  .chev { transition: transform .25s ease; }
+  @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+  .pop { animation: pop .5s ease both; }
+  @media (prefers-reduced-motion: reduce) { .pop, .panel, .chev { animation: none; transition: none; } html { scroll-behavior: auto; } }
+  :focus-visible { outline: 3px solid #A93F3A; outline-offset: 3px; }
+  @media print { body * { visibility: hidden; } #pledgeCard, #pledgeCard * { visibility: visible; } #pledgeCard { position: absolute; inset: 0; margin: auto; } }
+</style>
+</head>
+<body class="bg-paper text-ink antialiased">
+
+<!-- Hero -->
+<header class="bg-indigo text-stone">
+  <div class="max-w-5xl mx-auto px-6 pt-8 pb-20 md:pb-28">
+    <nav class="flex items-center justify-between text-sm text-stone/80">
+      <span class="font-display text-base text-stone">Gandhi Jayanti</span>
+      <a href="#pledge" class="underline underline-offset-4 hover:text-white">Make a pledge</a>
+    </nav>
+    <div class="mt-16 md:mt-24 max-w-3xl">
+      <p class="text-stone/70 text-sm">Mohandas Karamchand Gandhi · born 2 October 1869</p>
+      <blockquote class="mt-5">
+        <p class="font-display text-5xl sm:text-6xl md:text-7xl leading-[1.05]">My life is my message.</p>
+        <footer class="mt-6 text-stone/80 text-lg">Mahatma Gandhi</footer>
+      </blockquote>
+      <p class="mt-8 max-w-xl text-stone/85 text-lg leading-relaxed">A holiday is easy to observe and easy to forget. Explore the four values he lived by, then turn one of them into a promise you can keep.</p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="#values" class="bg-stone text-indigo font-semibold px-6 py-3 rounded-full hover:bg-white transition">Explore the values</a>
+        <a href="#pledge" class="border border-stone/50 px-6 py-3 rounded-full hover:bg-white/10 transition">Write my pledge</a>
+      </div>
+    </div>
+  </div>
+  <svg viewBox="0 0 1200 40" class="block w-full h-6 text-paper" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40V20Q300 0 600 20T1200 20V40Z" fill="currentColor"/></svg>
+</header>
+
+<!-- Values -->
+<main>
+<section id="values" class="max-w-5xl mx-auto px-6 py-16 md:py-24">
+  <h2 class="font-display text-3xl md:text-4xl">Four values, one daily practice each</h2>
+  <p class="mt-3 text-ink/70 max-w-xl">Tap a card to read what it asks of you, then carry it straight into your pledge.</p>
+
+  <div id="cards" class="mt-10 grid gap-5 md:grid-cols-2"></div>
+</section>
+
+<!-- Pledge -->
+<section id="pledge" class="bg-stone">
+  <div class="max-w-5xl mx-auto px-6 py-16 md:py-24 grid gap-12 lg:grid-cols-2">
+    <div>
+      <h2 class="font-display text-3xl md:text-4xl">Write your pledge</h2>
+      <p class="mt-3 text-ink/70 max-w-md">Small and specific beats grand and vague. Choose one commitment and put your name to it.</p>
+
+      <form id="pledgeForm" class="mt-8 space-y-6" novalidate>
+        <div>
+          <label for="name" class="block font-semibold mb-2">Your name</label>
+          <input id="name" type="text" maxlength="40" autocomplete="name" placeholder="e.g. Asha Verma"
+            class="w-full rounded-xl border border-thread bg-white px-4 py-3 focus:border-indigo focus:ring-2 focus:ring-indigo/30 outline-none">
+          <p id="nameErr" class="hidden mt-2 text-sm text-madder" role="alert">Enter your name so the pledge is yours.</p>
+        </div>
+
+        <fieldset>
+          <legend class="block font-semibold mb-2">Your commitment</legend>
+          <div id="choices" class="grid gap-2"></div>
+          <p id="choiceErr" class="hidden mt-2 text-sm text-madder" role="alert">Pick one commitment to continue.</p>
+        </fieldset>
+
+        <div>
+          <label for="duration" class="block font-semibold mb-2">For how long?</label>
+          <select id="duration" class="w-full rounded-xl border border-thread bg-white px-4 py-3 focus:border-indigo focus:ring-2 focus:ring-indigo/30 outline-none">
+            <option value="today">Today</option>
+            <option value="the next 7 days" selected>The next 7 days</option>
+            <option value="the next 30 days">The next 30 days</option>
+            <option value="the whole year ahead">The whole year ahead</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full sm:w-auto bg-indigo text-white font-semibold px-8 py-3.5 rounded-full hover:bg-ink transition">Generate pledge</button>
+      </form>
+    </div>
+
+    <div class="lg:pt-2">
+      <div id="empty" class="h-full min-h-[18rem] rounded-2xl border-2 border-dashed border-thread flex items-center justify-center text-center p-8 text-ink/60">
+        <p>Your pledge card will appear here once you fill in the form.</p>
+      </div>
+
+      <div id="result" class="hidden">
+        <article id="pledgeCard" class="pop bg-paper rounded-2xl border border-thread p-8 md:p-10 shadow-sm" aria-live="polite">
+          <p class="text-sm text-madder font-semibold">Gandhi Jayanti Pledge</p>
+          <p class="mt-6 text-ink/70">I,</p>
+          <h3 id="outName" class="font-display text-4xl break-words leading-tight"></h3>
+          <p class="mt-5 text-lg leading-relaxed">pledge, for <span id="outDuration" class="font-semibold"></span>, to</p>
+          <p id="outText" class="mt-2 font-display text-2xl leading-snug text-indigo"></p>
+          <p id="outValue" class="mt-5 text-sm text-ink/60"></p>
+          <div class="mt-10 flex items-end justify-between gap-4 border-t border-thread pt-4 text-sm text-ink/70">
+            <span id="outDate"></span>
+            <span class="font-display text-ink">Satyagraha begins at home.</span>
+          </div>
+        </article>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <button id="copyBtn" class="px-5 py-2.5 rounded-full border border-indigo text-indigo font-semibold hover:bg-indigo hover:text-white transition">Copy pledge</button>
+          <button id="printBtn" class="px-5 py-2.5 rounded-full border border-thread bg-white font-semibold hover:border-indigo transition">Print or save as PDF</button>
+          <button id="resetBtn" class="px-5 py-2.5 rounded-full text-ink/70 underline underline-offset-4 hover:text-ink">Start over</button>
+        </div>
+        <p id="status" class="mt-3 text-sm text-ink/70 min-h-[1.25rem]" role="status"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reflection -->
+<section class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+  <h2 class="font-display text-3xl">Before you go, reflect</h2>
+  <p class="mt-3 text-ink/70">Gandhi kept daily accounts of his own conduct. Try three questions tonight.</p>
+  <ul class="mt-8 space-y-4 text-lg leading-relaxed">
+    <li class="border-l-4 border-madder pl-4">Where did I choose the easy word over the true one today?</li>
+    <li class="border-l-4 border-madder pl-4">What did I use that someone else needed more?</li>
+    <li class="border-l-4 border-madder pl-4">Who did I hurt, even slightly, that I can make right tomorrow?</li>
+  </ul>
+</section>
+</main>
+
+<footer class="bg-ink text-stone/70 text-sm">
+  <div class="max-w-5xl mx-auto px-6 py-8">Made for 2 October, Gandhi Jayanti, and the International Day of Non-Violence.</div>
+</footer>
+
+<script>
+const VALUES = [
+  { id:'ahimsa', title:'Non-violence', sub:'Ahimsa', color:'#2B3A67',
+    body:'Not only refusing to strike, but refusing to wound with words, sarcasm, or silence. Gandhi saw it as the strongest force available to a person.',
+    practice:'Before replying to a heated message today, wait ten minutes and reply with kindness.',
+    pledge:'respond to anger with patience and never use hurtful words' },
+  { id:'satya', title:'Truth', sub:'Satya', color:'#A93F3A',
+    body:'He called his autobiography “experiments with truth.” Truth meant honesty with others and with yourself, even when it costs you.',
+    practice:'Notice one small untruth you usually let slide, such as an excuse or an exaggeration, and drop it.',
+    pledge:'speak honestly and admit my mistakes without excuses' },
+  { id:'simplicity', title:'Simplicity', sub:'Aparigraha', color:'#6B5B3E',
+    body:'He lived with few possessions and spun his own cloth. Owning less leaves more attention for what matters.',
+    practice:'Pick one thing you own and do not use. Give it to someone who will.',
+    pledge:'live with less and share what I do not need' },
+  { id:'sustain', title:'Sustainability', sub:'Sarvodaya', color:'#2F6B4F',
+    body:'Sarvodaya means the welfare of all, including those not yet born. Taking only your share is how a village, or a planet, stays whole.',
+    practice:'Carry a bag and a bottle today so you refuse one piece of single-use plastic.',
+    pledge:'cut my waste and take only my fair share from the Earth' }
+];
+
+const cards = document.getElementById('cards');
+const choices = document.getElementById('choices');
+
+VALUES.forEach((v, i) => {
+  const el = document.createElement('article');
+  el.className = 'rounded-2xl border border-thread bg-white overflow-hidden';
+  el.innerHTML = `
+    <button class="w-full text-left p-6 flex items-start gap-4" aria-expanded="false" aria-controls="p-${v.id}">
+      <span class="mt-1 h-10 w-1.5 rounded-full shrink-0" style="background:${v.color}"></span>
+      <span class="flex-1">
+        <span class="block font-display text-2xl">${v.title}</span>
+        <span class="block text-sm text-ink/60 mt-0.5">${v.sub}</span>
+      </span>
+      <span class="chev text-3xl leading-none text-ink/60" aria-hidden="true">+</span>
+    </button>
+    <div class="panel" id="p-${v.id}"><div>
+      <div class="px-6 pb-6 pl-[3.25rem]">
+        <p class="leading-relaxed text-ink/85">${v.body}</p>
+        <p class="mt-4 font-semibold">Today’s practice</p>
+        <p class="leading-relaxed text-ink/85">${v.practice}</p>
+        <button data-pick="${v.id}" class="mt-5 px-5 py-2.5 rounded-full text-white font-semibold hover:opacity-90 transition" style="background:${v.color}">Pledge this value</button>
+      </div>
+    </div></div>`;
+  const toggle = el.querySelector('button[aria-expanded]');
+  toggle.addEventListener('click', () => {
+    const open = el.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  el.querySelector('[data-pick]').addEventListener('click', () => {
+    document.querySelector(`input[value="${v.id}"]`).checked = true;
+    document.getElementById('choiceErr').classList.add('hidden');
+    document.getElementById('pledge').scrollIntoView();
+    setTimeout(() => document.getElementById('name').focus({ preventScroll: true }), 400);
+  });
+  cards.appendChild(el);
+
+  const lab = document.createElement('label');
+  lab.className = 'flex gap-3 items-start rounded-xl border border-thread bg-white p-4 cursor-pointer has-[:checked]:border-indigo has-[:checked]:ring-2 has-[:checked]:ring-indigo/30';
+  lab.innerHTML = `<input type="radio" name="commit" value="${v.id}" class="mt-1 accent-indigo">
+    <span><span class="font-semibold">${v.title}</span><span class="block text-sm text-ink/70">${v.pledge.charAt(0).toUpperCase() + v.pledge.slice(1)}.</span></span>`;
+  choices.appendChild(lab);
+});
+
+const $ = id => document.getElementById(id);
+let current = '';
+
+$('pledgeForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('name').value.trim();
+  const picked = document.querySelector('input[name="commit"]:checked');
+  $('nameErr').classList.toggle('hidden', !!name);
+  $('choiceErr').classList.toggle('hidden', !!picked);
+  if (!name) return $('name').focus();
+  if (!picked) return;
+
+  const v = VALUES.find(x => x.id === picked.value);
+  const dur = $('duration').value;
+  const date = new Date().toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+
+  $('outName').textContent = name;
+  $('outDuration').textContent = dur;
+  $('outText').textContent = v.pledge + '.';
+  $('outValue').textContent = `Inspired by ${v.title.toLowerCase()} (${v.sub})`;
+  $('outDate').textContent = date;
+  $('empty').classList.add('hidden');
+  $('result').classList.remove('hidden');
+
+  // replay entrance animation
+  const card = $('pledgeCard');
+  card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
+  card.style.borderTop = `6px solid ${v.color}`;
+
+  current = `I, ${name}, pledge, for ${dur}, to ${v.pledge}. (${date}) — Gandhi Jayanti Pledge`;
+  $('status').textContent = '';
+  if (window.innerWidth < 1024) card.scrollIntoView({ block:'center' });
+});
+
+$('copyBtn').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(current);
+    $('status').textContent = 'Copied. Share it with someone who can hold you to it.';
+  } catch (err) {
+    $('status').textContent = 'Copying is blocked here. Select the card text and copy it manually.';
+  }
+});
+$('printBtn').addEventListener('click', () => window.print());
+$('resetBtn').addEventListener('click', () => {
+  $('pledgeForm').reset();
+  $('result').classList.add('hidden');
+  $('empty').classList.remove('hidden');
+  $('name').focus();
+});
+</script>
+</body>
+</html>
